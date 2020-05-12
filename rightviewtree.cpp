@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 #include<queue>
+#include<sstream>
+#include<string>
   
  class node{
    public :
@@ -13,38 +15,59 @@ using namespace std;
      right = NULL;
    }
  };
- node *builtiterativetree(node *root)
+ node *builtiterativetree(string str)
  {
-        queue<node *>q;
-        q.push(root);
-        node *f=q.front();
-        if()
+        if(str.length() == 0 or str[0] == -1)
         {
-
+          return 0;
         }
-        else
-        {
-            
-        }
-        
 
+    vector<string> ip;
+    istringstream iss (str);
+
+    for(string str ; iss>>str; )
+    {
+        ip.push_back(str);
+    }
+
+    node *root = new node(stoi(ip[0]));
+
+    queue<node *> queue ;
+    queue.push(root);
+
+
+    int i=1;
+    while(!queue.empty() and i<ip.size())
+    {
+      node *cnode = queue.front();
+      queue.pop();
+
+      string curval = ip[i];
+      if(stoi(curval) != -1)
+      {
+        cnode->left = new node(stoi(ip[i]));
+        queue.push(cnode->left);
+      }
+    
+
+    i++ ;
+    if(i > ip.size())
+       break ;
+    curval = ip[i] ;
+
+    if(stoi(curval) != -1 )
+    {
+      cnode->right = new node (stoi (curval));
+      queue.push(cnode->right);
+    }
+
+    i++ ;
+       
+    }
+  return root ;
     
  }
-    node *builttree()
- {
-    int d;
-    cin>>d;
-    if(d==-1)
-    {
-      return NULL;
-    }
-    node *root=new node(d);
-    root->left = builttree();
-    root->right= builttree();
-    return root ;
-
- }
-
+    
  
  
 
@@ -62,18 +85,17 @@ using namespace std;
                  if(level>max_level){
                      max_level = level ;
                      v.push_back(root->data);
-                     cout<<max_level<< " true"<<endl;;
                  }
 
-                 helper(root->right,level+1);
                  helper(root->left,level+1);
+                 helper(root->right,level+1);
              }
              vector <int> rightsideview(node *root)
              {
                  helper(root,0);
                  return v;
              }
-             
+              
 
             
     };
@@ -85,17 +107,15 @@ using namespace std;
 
  int main()
  {
-     int d ;
-     cin>>d;
-    node *root= new node(d);
-
-   builtiterativetree(root);
-  solution s;
-  vector<int> x= s.rightsideview(root);
-   
-   for(int m :x)
+     string s;  
+     getline(cin,s);
+  
+     node *root = builtiterativetree(s);
+    solution m;
+  vector<int> x=  m.rightsideview(root);
+    for (int a : x)
    {
-       cout<<m<<" ";
-   }
+     cout << a <<" ";
+   }  
    
  }
